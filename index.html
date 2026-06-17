@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Onboarding - Omega Healthcare</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--az:#1b6ca8;--azd:#0c447c;--azc:#dce8f3;--vd:#27a84a;--vc:#e8f5e9;--am:#b45309;--amc:#fff8e1;--ro:#c0392b;--roc:#fdf0ef;--bd:#e0e0e0;--bg:#f0f2f5;--tx:#1a2433;--t2:#5f6368}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:var(--tx);background:var(--bg);min-height:100vh}
+.topbar{background:#fff;border-bottom:3px solid var(--az);padding:0 20px;display:flex;align-items:center;gap:14px;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.topbar img{height:46px;width:auto}
+.ti{flex:1}.tt{font-size:15px;font-weight:700;color:var(--azd)}.ts{font-size:11px;color:var(--t2);margin-top:1px}
+.nav{display:flex;gap:3px}
+.nav button{padding:7px 13px;border-radius:8px;font-size:13px;color:var(--t2);cursor:pointer;border:none;background:none;font-family:inherit;font-weight:500;transition:all .15s;display:flex;align-items:center;gap:5px}
+.nav button:hover{background:var(--azc);color:var(--azd)}
+.nav button.on{background:var(--az);color:#fff}
+.main{max-width:1080px;margin:0 auto;padding:22px 14px}
+.pg{display:none}.pg.on{display:block}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.pt{font-size:19px;font-weight:700;color:var(--azd)}
+.btn{padding:8px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit;border:none;display:inline-flex;align-items:center;gap:6px;font-weight:600;transition:all .15s}
+.bp{background:var(--az);color:#fff}.bp:hover{background:var(--azd)}
+.bs{background:var(--vd);color:#fff}.bs:hover{background:#1e8a3c}
+.bx{background:#1d6f42;color:#fff}
+.bo{background:#fff;border:1.5px solid var(--bd);color:var(--tx)}.bo:hover{border-color:var(--az);color:var(--az)}
+.bd2{background:var(--roc);border:1.5px solid #f5c6c2;color:var(--ro)}
+.bsm{padding:5px 11px;font-size:12px}
+.bg2{display:flex;gap:8px;flex-wrap:wrap}
+.card{background:#fff;border-radius:14px;border:1px solid var(--bd);padding:18px;margin-bottom:14px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.ali{padding:11px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;display:flex;gap:9px;line-height:1.5;background:var(--azc);color:var(--azd);border:1px solid #9fc3e0}
+.alw{padding:11px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;display:flex;gap:9px;line-height:1.5;background:var(--amc);color:var(--am);border:1px solid #f5c97a}
+.als{padding:11px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;display:flex;gap:9px;line-height:1.5;background:var(--vc);color:#1a5e2a;border:1px solid #a5d6a7}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fila3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fg label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select,.fg textarea{padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-family:inherit;color:var(--tx);background:#fff;width:100%;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--az);box-shadow:0 0 0 3px rgba(27,108,168,.1)}
+/* PASOS */
+.paso-ind{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.paso-btn{padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid var(--bd);background:#fff;font-family:inherit;font-weight:500;color:var(--t2);transition:all .15s}
+.paso-btn.on{background:var(--az);color:#fff;border-color:var(--az)}
+.paso-btn.done{background:var(--vc);color:#1a5e2a;border-color:#a5d6a7}
+.paso{display:none}.paso.on{display:block}
+/* SESIONES */
+.ses-grid{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.ses-item{border:1.5px solid var(--bd);border-radius:10px;padding:11px 13px;background:#fff;transition:border .15s}
+.ses-item.ob{border-color:var(--az);background:var(--azc)}
+.ses-item.fijo{border-color:var(--vd);background:var(--vc)}
+.ses-item-top{display:flex;align-items:center;gap:10px}
+.ses-tog{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--bd);background:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;transition:all .15s}
+.ses-tog.on{background:var(--az);border-color:var(--az)}
+.ses-tog.dis{background:#eee;border-color:#ccc;cursor:not-allowed}
+.ses-icon{font-size:20px;flex-shrink:0}
+.ses-nom{font-weight:700;font-size:13px;flex:1}
+.ses-tag{font-size:10px;padding:2px 9px;border-radius:20px;font-weight:700}
+.tag-fijo{background:var(--vc);color:#1a5e2a}
+.tag-ob{background:var(--azc);color:var(--azd)}
+.tag-op{background:#f0f0f0;color:#666}
+.ses-det{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07)}
+.ses-det.on{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+/* EMPLEADOS */
+.ec{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.ec-nom{font-size:15px;font-weight:700}
+.ec-meta{font-size:11px;color:var(--t2);margin-top:3px}
+.dias{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.dcol{border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.dhd{padding:7px 10px;font-size:12px;font-weight:700;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px}
+.dhd.d1{background:#dce8f3;color:#0c447c}.dhd.d2{background:#e8f5e9;color:#1a5e2a}.dhd.d3{background:#f5f5f5;color:#444}
+.dbody{padding:8px;display:flex;flex-direction:column;gap:6px;min-height:50px}
+.chip{border-radius:8px;padding:7px 9px;font-size:11px;line-height:1.4}
+.cob{background:#dce8f3;border:1px solid #9fc3e0;color:#0c447c}
+.cop{background:#f5f5f5;border:1px solid #ddd;color:#444}
+.cok{background:#e8f5e9;border:1px solid #a5d6a7;color:#1a5e2a}
+.cre{background:#fff8e1;border:1px solid #f5c97a;color:#7a4a00}
+.cfijo{background:var(--vc);border:1px solid #a5d6a7;color:#1a5e2a}
+.cag{background:#e8f0fb;border:1px solid #9fc3e0;color:#0c447c}
+.chip-top{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.chip-ico{font-size:13px}
+.chip-nom{font-weight:700;font-size:11px}
+.chor{font-size:10px;opacity:.75}
+.cexp{font-size:10px;color:#1a5e2a;font-weight:600;margin-top:2px}
+.cpend{font-size:10px;color:var(--am);margin-top:2px}
+.cacc{margin-top:5px;display:flex;gap:3px;flex-wrap:wrap}
+.cbtn{padding:2px 8px;border-radius:5px;font-size:10px;cursor:pointer;border:1px solid;font-family:inherit;font-weight:600}
+.cbhr{background:#fff8e1;border-color:#f5c97a;color:#7a4a00}
+.pw{height:6px;background:#f0f0f0;border-radius:3px;margin:8px 0 4px;overflow:hidden}
+.pb{height:100%;background:var(--az);border-radius:3px;transition:width .4s}
+.badge{display:inline-flex;align-items:center;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
+.bga{background:var(--azc);color:var(--azd)}.bgg{background:var(--vc);color:#1a5e2a}.bgw{background:var(--amc);color:var(--am)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.stat-icon{font-size:24px;margin-bottom:4px}
+.stn{font-size:28px;font-weight:800}.stl{font-size:11px;color:var(--t2);margin-top:2px}
+.cierre{background:linear-gradient(135deg,#1a5e2a,#27a84a);color:#fff;border-radius:12px;padding:14px 18px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+/* SELECTOR VISTA */
+.vista-sel{max-width:500px;margin:50px auto;background:#fff;border-radius:18px;border:1px solid var(--bd);padding:40px;text-align:center;box-shadow:0 6px 30px rgba(0,0,0,.1)}
+.vista-sel h2{font-size:21px;font-weight:700;color:var(--azd);margin-bottom:8px}
+.vista-sel p{font-size:13px;color:var(--t2);margin-bottom:30px}
+.vista-opts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.vista-opt{border:2px solid var(--bd);border-radius:14px;padding:26px 16px;cursor:pointer;transition:all .2s;background:#fff}
+.vista-opt:hover{border-color:var(--az);background:var(--azc);transform:translateY(-2px);box-shadow:0 4px 16px rgba(27,108,168,.15)}
+.vista-opt-icon{font-size:40px;margin-bottom:10px}
+.vista-opt-tit{font-size:14px;font-weight:700;color:var(--azd);margin-bottom:5px}
+.vista-opt-sub{font-size:11px;color:var(--t2);line-height:1.5}
+/* EQUIPOS GRID */
+.eq-grid-inner{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.eq-card{background:#fff;border:2px solid var(--bd);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .2s}
+.eq-card:hover{border-color:var(--az);background:var(--azc);transform:translateY(-2px);box-shadow:0 4px 16px rgba(27,108,168,.12)}
+.eq-icon{font-size:28px;margin-bottom:6px}
+.eq-name{font-size:13px;font-weight:700;color:var(--azd);margin-bottom:5px}
+.eq-badge{background:var(--az);color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 9px;display:inline-block}
+.eq-nopend{font-size:10px;color:var(--t2)}
+/* EMPLEADO PENDIENTE */
+.emp-pen{border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:12px;background:#fff}
+.emp-pen.grupo{border-color:var(--az);background:var(--azc)}
+.grupo-tag{display:inline-flex;align-items:center;gap:5px;background:var(--az);color:#fff;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;margin-bottom:10px}
+/* FIRMA */
+.sig-tabs{display:flex;gap:8px;margin-bottom:14px}
+.sig-tab{padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;border:1.5px solid var(--bd);background:#fff;font-family:inherit;font-weight:500;color:var(--t2);transition:all .15s}
+.sig-tab.on{background:var(--az);color:#fff;border-color:var(--az)}
+.sig-panel{display:none}.sig-panel.on{display:block}
+.sigwrap{border:2px dashed var(--bd);border-radius:10px;background:#fafafa;cursor:crosshair;margin-bottom:8px}
+#sigcanvas{display:block;width:100%;touch-action:none}
+.sig-pre-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.sig-pre-opt{border:2px solid var(--bd);border-radius:10px;padding:10px;cursor:pointer;text-align:center;transition:all .15s;background:#fff;min-height:70px;display:flex;align-items:center;justify-content:center}
+.sig-pre-opt:hover{border-color:var(--az)}
+.sig-pre-opt.sel{border-color:var(--az);background:var(--azc);box-shadow:0 0 0 3px rgba(27,108,168,.15)}
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-start;justify-content:center;padding:24px 10px;overflow-y:auto}
+.mo.on{display:flex}
+.md{background:#fff;border-radius:16px;padding:24px;width:660px;max-width:98vw;box-shadow:0 24px 60px rgba(0,0,0,.25);margin-bottom:20px}
+.mdsm{width:420px}
+.mtit{font-size:16px;font-weight:700;color:var(--azd);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.msub{font-size:12px;color:var(--t2);margin-bottom:16px}
+.mpie{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)}
+@media(max-width:680px){.dias,.fila,.fila3,.stats,.ses-det.on,.vista-opts,.sig-pre-grid,.eq-grid-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SELECTOR VISTA -->
+<div id="vista-selector" style="padding:20px">
+  <div style="text-align:center;margin-bottom:24px">
+    <img src="data:image/jpeg;base64,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" alt="Omega Healthcare" style="height:54px">
+  </div>
+  <div class="vista-sel">
+    <h2>🎉 Portal de Onboarding</h2>
+    <p>Bienvenido a Omega Healthcare. Selecciona como quieres acceder.</p>
+    <div class="vista-opts">
+      <div class="vista-opt" id="opt-hr">
+        <div class="vista-opt-icon">👤</div>
+        <div class="vista-opt-tit">Human Resources</div>
+        <div class="vista-opt-sub">Registrar empleados, ver progreso y certificados de cierre</div>
+      </div>
+      <div class="vista-opt" id="opt-eq">
+        <div class="vista-opt-icon">🤝</div>
+        <div class="vista-opt-tit">Soy de un equipo</div>
+        <div class="vista-opt-sub">Agendar mis sesiones y firmar al completarlas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP HR -->
+<div id="app-hr" style="display:none">
+  <div class="topbar">
+    <img src="data:image/jpeg;base64,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" alt="Omega Healthcare">
+    <div class="ti">
+      <div class="tt">Portal de Onboarding</div>
+      <div class="ts">Vista Human Resources</div>
+    </div>
+    <nav class="nav">
+      <button id="nb-dash" class="on">📊 Inicio</button>
+      <button id="nb-emps">👥 Empleados</button>
+      <button id="nb-fmts">📄 Certificados</button>
+    </nav>
+    <button class="btn bo bsm" id="btn-cv1" style="margin-left:8px">🔄 Cambiar vista</button>
+  </div>
+  <div class="main">
+    <div class="pg on" id="pg-dash">
+      <div class="ph">
+        <div class="pt">📊 Resumen de onboarding</div>
+        <div class="bg2">
+          <button class="btn bx" id="btn-xl1">📊 Exportar Excel</button>
+          <button class="btn bp" id="btn-new1">➕ Nuevo empleado</button>
+        </div>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:700;color:var(--azd);margin-bottom:14px">🔄 Empleados en proceso</div>
+        <div id="dash-lista"></div>
+      </div>
+    </div>
+    <div class="pg" id="pg-emps">
+      <div class="ph">
+        <div class="pt">👥 Empleados en onboarding</div>
+        <div class="bg2">
+          <button class="btn bx" id="btn-xl2">📊 Excel</button>
+          <button class="btn bp" id="btn-new2">➕ Nuevo empleado</button>
+        </div>
+      </div>
+      <div class="ali">👔 El jefe inmediato abre el Dia 1 (2h, fijo). Las sesiones obligatorias van el Dia 1. Solo HR puede mover sesiones a otro dia. El certificado PDF se genera automaticamente al completar el 100%.</div>
+      <div id="lista-emps"></div>
+    </div>
+    <div class="pg" id="pg-fmts">
+      <div class="ph"><div class="pt">🏆 Certificados de cierre</div></div>
+      <div class="ali">🎉 El certificado final con todas las firmas se genera automaticamente cuando el empleado completa el 100% de sus sesiones.</div>
+      <div id="lista-fmts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP EQUIPOS -->
+<div id="app-eq" style="display:none">
+  <div class="topbar">
+    <img src="data:image/jpeg;base64,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" alt="Omega Healthcare">
+    <div class="ti">
+      <div class="tt">Portal de Onboarding</div>
+      <div class="ts" id="eq-sub">Selecciona tu equipo</div>
+    </div>
+    <button class="btn bo bsm" id="btn-cv2" style="margin-left:auto">🔄 Cambiar vista</button>
+  </div>
+  <div class="main">
+    <div id="eq-sel">
+      <div class="ph"><div class="pt">🤝 Selecciona tu equipo</div></div>
+      <div class="eq-grid-inner" id="eq-grid"></div>
+    </div>
+    <div id="eq-view" style="display:none">
+      <div class="ph">
+        <div class="pt" id="eq-tit">Mis sesiones</div>
+        <button class="btn bo bsm" id="btn-eq-back">← Volver</button>
+      </div>
+      <div id="eq-info-box"></div>
+      <div class="eq-tabs">
+        <button class="eq-tab on" id="etab-ag">📅 Agendar horarios</button>
+        <button class="eq-tab" id="etab-fi">✍ Firmar sesiones</button>
+      </div>
+      <div id="eq-panel-ag" class="eq-panel on"></div>
+      <div id="eq-panel-fi" class="eq-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO EMPLEADO -->
+<div class="mo" id="m-emp">
+  <div class="md">
+    <div class="mtit">➕ Registrar nuevo empleado</div>
+    <div class="msub">3 pasos para configurar el onboarding completo</div>
+    <div class="paso-ind">
+      <button class="paso-btn on" id="pind-1">1. Datos</button>
+      <button class="paso-btn" id="pind-2">2. Sesiones</button>
+      <button class="paso-btn" id="pind-3">3. Confirmar</button>
+    </div>
+    <div class="paso on" id="paso-1">
+      <div class="als">🔒 Solo HR completa este paso con los datos del nuevo colaborador.</div>
+      <div class="fila">
+        <div class="fg"><label>Nombre completo *</label><input id="f-nom" placeholder="Ej. Maria Torres"></div>
+        <div class="fg"><label>Omega ID *</label><input id="f-id" placeholder="OM-00123"></div>
+      </div>
+      <div class="fila">
+        <div class="fg"><label>Cargo</label><input id="f-cargo" placeholder="Ej. Analista Financiera"></div>
+        <div class="fg"><label>Area</label><input id="f-area" placeholder="Ej. Finance"></div>
+      </div>
+      <div class="fila">
+        <div class="fg"><label>Fecha de ingreso</label><input type="date" id="f-fecha"></div>
+        <div class="fg"><label>Jefe inmediato</label><input id="f-jefe" placeholder="Nombre del jefe"></div>
+      </div>
+      <div class="fg"><label>Correo corporativo</label><input type="email" id="f-email" placeholder="nombre@omegahealthcare.com"></div>
+      <div class="mpie">
+        <button class="btn bo" id="btn-ce">Cancelar</button>
+        <button class="btn bp" id="btn-p1">Siguiente →</button>
+      </div>
+    </div>
+    <div class="paso" id="paso-2">
+      <div class="alw">📋 Selecciona las sesiones. Los equipos y el jefe inmediato podran agendar y firmar desde su vista.</div>
+      <div class="ses-grid" id="ses-grid"></div>
+      <div class="mpie">
+        <button class="btn bo" id="btn-p2a">← Anterior</button>
+        <button class="btn bp" id="btn-p2">Siguiente →</button>
+      </div>
+    </div>
+    <div class="paso" id="paso-3">
+      <div class="als">✅ Revisa el resumen antes de guardar.</div>
+      <div id="resumen"></div>
+      <div class="mpie">
+        <button class="btn bo" id="btn-p3a">← Anterior</button>
+        <button class="btn bp" id="btn-ge">✅ Guardar y registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR SESION -->
+<div class="mo" id="m-add-ses">
+  <div class="md">
+    <div class="mtit">+ Agregar sesion al empleado</div>
+    <div class="msub" id="add-ses-sub"></div>
+    <div class="alw">Solo aparecen las sesiones que no tiene asignadas aun.</div>
+    <div id="add-ses-grid" style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px"></div>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cadd">Cancelar</button>
+      <button class="btn bp" id="btn-okadd">Agregar sesiones seleccionadas</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR HORA (HR) -->
+<div class="mo" id="m-cambiar">
+  <div class="md" style="width:480px">
+    <div class="mtit">🔒 Cambiar horario - Solo HR</div>
+    <div class="msub">El equipo ya confirmo su horario. Solo HR puede modificarlo.</div>
+    <div class="alw">⚠️ Esta accion queda registrada. Indica el motivo.</div>
+    <div id="cambiar-info" style="margin-bottom:12px"></div>
+    <div class="fila">
+      <div class="fg"><label>Nuevo dia *</label>
+        <select id="ch-dia"><option value="1">Dia 1</option><option value="2">Dia 2</option><option value="3">Dia 3</option></select>
+      </div>
+      <div class="fg"><label>Nueva hora *</label><input type="time" id="ch-hora"></div>
+    </div>
+    <div class="fg"><label>Motivo *</label><input id="ch-mot" placeholder="Ej. Conflicto de agenda del expositor..."></div>
+    <div class="fg"><label>Autorizado por HR *</label><input id="ch-aut" placeholder="Nombre de quien autoriza"></div>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cch">Cancelar</button>
+      <button class="btn bp" id="btn-okch">✅ Confirmar cambio</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REPROGRAMAR -->
+<div class="mo" id="m-repro">
+  <div class="md" style="width:500px">
+    <div class="mtit">🔒 Reprogramar sesion Dia 1 - Solo HR</div>
+    <div class="msub">Esta accion queda registrada en el log de auditoria</div>
+    <div class="alw">⚠️ Completa todos los campos obligatorios.</div>
+    <div class="fg"><label>Motivo *</label><textarea id="re-mot" rows="2" placeholder="Ej. El equipo IT no tiene disponibilidad..."></textarea></div>
+    <div class="fila">
+      <div class="fg"><label>Nuevo dia *</label><select id="re-dia"><option value="2">Dia 2</option><option value="3">Dia 3</option></select></div>
+      <div class="fg"><label>Nueva hora</label><input type="time" id="re-hora"></div>
+    </div>
+    <div class="fg"><label>Autorizado por HR *</label><input id="re-aut" placeholder="Nombre de quien autoriza"></div>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cr">Cancelar</button>
+      <button class="btn bp" id="btn-okr">✅ Confirmar cambio</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BORRAR -->
+<div class="mo" id="m-del">
+  <div class="md mdsm">
+    <div class="mtit">🗑 Eliminar empleado</div>
+    <div class="msub">Esta accion no se puede deshacer</div>
+    <p style="font-size:14px;margin-bottom:6px">Eliminar a <b id="del-nom"></b> y todas sus sesiones?</p>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cd">Cancelar</button>
+      <button class="btn bd2" id="btn-okd">Si, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AGENDAR -->
+<div class="mo" id="m-ag">
+  <div class="md">
+    <div class="mtit" id="ag-tit">📅 Agendar sesion</div>
+    <div class="msub" id="ag-sub"></div>
+    <div id="ag-emps-info"></div>
+    <div style="border-top:1px solid var(--bd);padding-top:14px;margin-top:4px">
+      <div class="fila3">
+        <div class="fg"><label>Dia *</label>
+          <select id="ag-dia"><option value="1">Dia 1</option><option value="2">Dia 2</option><option value="3">Dia 3</option></select>
+        </div>
+        <div class="fg"><label>Hora inicio *</label><input type="time" id="ag-hora"></div>
+        <div class="fg"><label>Modalidad</label>
+          <select id="ag-modo"><option>Presencial</option><option>Virtual (Teams)</option><option>Hibrido</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Tu nombre (expositor) *</label><input id="ag-exp" placeholder="Nombre completo"></div>
+    </div>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cag">Cancelar</button>
+      <button class="btn bp" id="btn-okag">✅ Confirmar agenda</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FIRMA -->
+<div class="mo" id="m-firma">
+  <div class="md">
+    <div class="mtit">✍ Firma de onboarding completado</div>
+    <div class="msub" id="f-msub"></div>
+    <div id="firma-info"></div>
+    <div style="margin-top:14px">
+      <div class="sig-tabs">
+        <button class="sig-tab on" id="stab-draw">✏️ Dibujar firma</button>
+        <button class="sig-tab" id="stab-pre">🖋️ Firma predeterminada</button>
+      </div>
+      <div class="sig-panel on" id="spanel-draw">
+        <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+          <button class="btn bo bsm" id="btn-bsig">🗑 Borrar</button>
+          <span style="font-size:11px;color:var(--t2)">Dibuja con el mouse o con el dedo en pantalla tactil</span>
+        </div>
+        <div class="sigwrap"><canvas id="sigcanvas" width="560" height="120"></canvas></div>
+      </div>
+      <div class="sig-panel" id="spanel-pre">
+        <p style="font-size:12px;color:var(--t2);margin-bottom:10px">Escribe tu nombre y selecciona el estilo que prefieras:</p>
+        <div class="fg"><label>Tu nombre</label><input id="sig-nombre" placeholder="Escribe tu nombre para previsualizar la firma"></div>
+        <div class="sig-pre-grid" id="sig-pre-grid"></div>
+      </div>
+    </div>
+    <div class="mpie">
+      <button class="btn bo" id="btn-cf">Cancelar</button>
+      <button class="btn bs" id="btn-okf">✅ Confirmar sesion completada</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+// ---- DATOS ----
+var EQUIPOS_CON_ICONO = [
+  {k:'Jefe inmediato', ico:'👔'},
+  {k:'HR',             ico:'👤'},
+  {k:'IT',             ico:'💻'},
+  {k:'Compliance',     ico:'\u2696'},
+  {k:'SST',            ico:'🦺'},
+  {k:'Legal',          ico:'📋'},
+  {k:'TA',             ico:'🎯'},
+  {k:'Facilities',     ico:'🏢'},
+  {k:'Procurement',    ico:'🛒'},
+  {k:'Tax',            ico:'💰'},
+  {k:'Finance',        ico:'📊'},
+  {k:'Ops',            ico:'\u2699'},
+  {k:'Training',       ico:'📚'},
+  {k:'Quality',        ico:'\u2705'},
+  {k:'Marketing',      ico:'📣'},
+  {k:'WFM',            ico:'📅'},
+  {k:'Payroll',         ico:'💵'}
+];
+
+function getIco(k){
+  var found = EQUIPOS_CON_ICONO.find(function(x){return x.k===k});
+  return found ? found.ico : '📌';
+}
+
+var SES_DEF=[
+  {k:'Jefe inmediato', tipo:'fijo', dia:1, hora:'08:00', dur:120},
+  {k:'HR',             tipo:'ob',   dia:1, hora:'10:00', dur:30},
+  {k:'IT',             tipo:'ob',   dia:1, hora:'10:30', dur:30},
+  {k:'Compliance',     tipo:'ob',   dia:1, hora:'11:00', dur:30},
+  {k:'SST',            tipo:'ob',   dia:1, hora:'11:30', dur:30},
+  {k:'Legal',          tipo:'op',   dia:2, hora:'08:00', dur:30},
+  {k:'TA',             tipo:'op',   dia:2, hora:'08:30', dur:30},
+  {k:'Facilities',     tipo:'op',   dia:2, hora:'09:00', dur:30},
+  {k:'Procurement',    tipo:'op',   dia:2, hora:'09:30', dur:30},
+  {k:'Tax',            tipo:'op',   dia:3, hora:'08:00', dur:30},
+  {k:'Finance',        tipo:'op',   dia:3, hora:'08:30', dur:30},
+  {k:'Ops',            tipo:'op',   dia:3, hora:'09:00', dur:30},
+  {k:'Training',       tipo:'op',   dia:3, hora:'09:30', dur:30},
+  {k:'Quality',        tipo:'op',   dia:3, hora:'10:00', dur:30},
+  {k:'Marketing',      tipo:'op',   dia:3, hora:'10:30', dur:30},
+  {k:'WFM',            tipo:'op',   dia:3, hora:'11:00', dur:30},
+  {k:'Payroll',        tipo:'op',   dia:3, hora:'11:30', dur:30}
+];
+
+var SIG_ESTILOS=[
+  {label:'Clasica',    font:'italic bold 36px Georgia,serif',   color:'#1a2433'},
+  {label:'Elegante',   font:'italic 40px "Times New Roman",serif', color:'#0c447c'},
+  {label:'Moderna',    font:'bold 32px Arial,sans-serif',       color:'#1a2433'},
+  {label:'Manuscrita', font:'italic 38px "Courier New",monospace', color:'#2c3e50'}
+];
+var sigEstiloSel=0,sigModo='draw';
+
+function leer(k){try{return JSON.parse(localStorage.getItem('ohc8_'+k)||'[]')}catch(e){return[]}}
+function guardar(k,v){localStorage.setItem('ohc8_'+k,JSON.stringify(v))}
+
+var emps=leer('e'),fmts=leer('fm');
+var pEi=null,pSk=null,sigCtx=null,sigOn=false;
+var tmpSes=[],paso=1,eqActual=null,agPend=null,firmaPend=null;
+
+function amin(t,m){if(!t)return'';var p=t.split(':'),tot=parseInt(p[0])*60+parseInt(p[1])+m;return String(Math.floor(tot/60)).padStart(2,'0')+':'+String(tot%60).padStart(2,'0')}
+function fdate(d){if(!d)return'--';return new Date(d+'T12:00').toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})}
+function hoy(){return new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'})}
+function pct(e){var v=Object.values(e.ses);if(!v.length)return 0;return Math.round(v.filter(function(s){return s.st==='ok'}).length/v.length*100)}
+function aM(id){document.getElementById(id).classList.add('on')}
+function cM(id){document.getElementById(id).classList.remove('on')}
+
+// SELECTOR VISTA
+document.getElementById('opt-hr').addEventListener('click',function(){
+  var pin=prompt('Ingresa el PIN de acceso HR:');
+  if(pin===null) return;
+  var HR_PIN='omega2024'; if(pin!==HR_PIN){
+    alert('PIN incorrecto. Acceso denegado.');
+    return;
+  }
+  document.getElementById('vista-selector').style.display='none';
+  document.getElementById('app-hr').style.display='block';
+  irHR('dash');
+});
+document.getElementById('opt-eq').addEventListener('click',function(){
+  document.getElementById('vista-selector').style.display='none';
+  document.getElementById('app-eq').style.display='block';
+  buildEqGrid();
+});
+document.getElementById('btn-cv1').addEventListener('click',function(){
+  document.getElementById('app-hr').style.display='none';
+  document.getElementById('vista-selector').style.display='block';
+});
+document.getElementById('btn-cv2').addEventListener('click',function(){
+  document.getElementById('app-eq').style.display='none';
+  document.getElementById('vista-selector').style.display='block';
+});
+
+// NAV HR
+function irHR(p){
+  ['dash','emps','fmts'].forEach(function(id){
+    document.getElementById('pg-'+id).classList.remove('on');
+    document.getElementById('nb-'+id).classList.remove('on');
+  });
+  document.getElementById('pg-'+p).classList.add('on');
+  document.getElementById('nb-'+p).classList.add('on');
+  if(p==='dash')rDash();
+  if(p==='emps')rEmps();
+  if(p==='fmts')rFmts();
+}
+document.getElementById('nb-dash').addEventListener('click',function(){irHR('dash')});
+document.getElementById('nb-emps').addEventListener('click',function(){irHR('emps')});
+document.getElementById('nb-fmts').addEventListener('click',function(){irHR('fmts')});
+document.getElementById('btn-new1').addEventListener('click',function(){irHR('emps');abrirNuevo()});
+document.getElementById('btn-new2').addEventListener('click',abrirNuevo);
+document.getElementById('btn-xl1').addEventListener('click',xlExport);
+document.getElementById('btn-xl2').addEventListener('click',xlExport);
+
+// DASHBOARD
+function rDash(){
+  var act=emps.filter(function(e){return pct(e)<100});
+  var don=emps.filter(function(e){return pct(e)===100});
+  document.getElementById('stats').innerHTML=
+    '<div class="stat"><div class="stat-icon">👥</div><div class="stn" style="color:var(--az)">'+emps.length+'</div><div class="stl">Total empleados</div></div>'+
+    '<div class="stat"><div class="stat-icon">🔄</div><div class="stn" style="color:var(--am)">'+act.length+'</div><div class="stl">En proceso</div></div>'+
+    '<div class="stat"><div class="stat-icon">🏆</div><div class="stn" style="color:var(--vd)">'+don.length+'</div><div class="stl">Completados</div></div>'+
+    '<div class="stat"><div class="stat-icon">📄</div><div class="stn" style="color:var(--az)">'+fmts.length+'</div><div class="stl">Certificados</div></div>';
+  var c=document.getElementById('dash-lista');
+  if(!act.length){c.innerHTML='<p style="color:var(--t2);font-size:13px">No hay empleados en proceso actualmente.</p>';return}
+  var h='';
+  act.forEach(function(e){
+    var p=pct(e),ini=e.nom.split(' ').map(function(n){return n[0]}).join('').slice(0,2);
+    h+='<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)">'
+      +'<div style="width:40px;height:40px;border-radius:50%;background:var(--azc);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--azd);font-size:13px;flex-shrink:0">'+ini+'</div>'
+      +'<div style="flex:1">'
+        +'<div style="font-weight:700;font-size:13px">'+e.nom+' <span style="font-size:11px;color:var(--t2)">'+e.id+'</span></div>'
+        +'<div style="font-size:11px;color:var(--t2)">'+getIco('HR')+' '+(e.cargo||'--')+' - '+fdate(e.fecha)+'</div>'
+        +'<div class="pw"><div class="pb" style="width:'+p+'%"></div></div>'
+        +'<div style="font-size:10px;color:var(--t2)">'+p+'% completado</div>'
+      +'</div>'
+      +'<button class="btn bo bsm js-go">Ver →</button>'
+    +'</div>';
+  });
+  c.innerHTML=h;
+  c.querySelectorAll('.js-go').forEach(function(b){b.addEventListener('click',function(){irHR('emps')})});
+}
+
+// NUEVO EMPLEADO
+function abrirNuevo(){
+  ['f-nom','f-id','f-cargo','f-area','f-jefe','f-email'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
+  mostrarPaso(1);aM('m-emp');
+}
+function mostrarPaso(n){
+  paso=n;
+  [1,2,3].forEach(function(i){
+    document.getElementById('paso-'+i).classList.toggle('on',i===n);
+    var b=document.getElementById('pind-'+i);
+    b.className='paso-btn'+(i===n?' on':i<n?' done':'');
+  });
+}
+document.getElementById('btn-ce').addEventListener('click',function(){cM('m-emp')});
+document.getElementById('pind-1').addEventListener('click',function(){if(paso>1)mostrarPaso(1)});
+document.getElementById('pind-2').addEventListener('click',function(){if(paso>2)mostrarPaso(2)});
+document.getElementById('btn-p1').addEventListener('click',function(){
+  if(!document.getElementById('f-nom').value.trim()||!document.getElementById('f-id').value.trim()){alert('Nombre y Omega ID son obligatorios.');return}
+  buildSesGrid();mostrarPaso(2);
+});
+document.getElementById('btn-p2a').addEventListener('click',function(){mostrarPaso(1)});
+document.getElementById('btn-p2').addEventListener('click',function(){
+  if(!tmpSes.filter(function(s){return s.inc}).length){alert('Selecciona al menos una sesion.');return}
+  buildResumen();mostrarPaso(3);
+});
+document.getElementById('btn-p3a').addEventListener('click',function(){mostrarPaso(2)});
+document.getElementById('btn-ge').addEventListener('click',guardarEmp);
+
+function buildSesGrid(){
+  tmpSes=SES_DEF.map(function(s){return{k:s.k,tipo:s.tipo,dia:s.dia,hora:s.hora,dur:s.dur,inc:s.tipo!=='op',modo:'Presencial'}});
+  var h='';
+  tmpSes.forEach(function(s,i){
+    var iF=s.tipo==='fijo',isO=s.tipo==='ob';
+    var iCls=iF?'ses-item fijo':isO?'ses-item ob':'ses-item';
+    var tag=iF?'<span class="ses-tag tag-fijo">Fijo Dia 1</span>':isO?'<span class="ses-tag tag-ob">Obligatoria Dia 1</span>':'<span class="ses-tag tag-op">Opcional</span>';
+    var tCls='ses-tog'+(iF||isO?' on dis':s.inc?' on':'');
+    var dCls='ses-det'+(s.inc?' on':'');
+    var detH=iF
+      ?'<div class="fg" style="margin:0"><label>Hora</label><input value="08:00 - 10:00 (2h fijo)" disabled style="background:#eee;color:#888;margin-bottom:0"></div>'
+       +'<div class="fg" style="margin:0"><label>Dia</label><input value="Dia 1 siempre" disabled style="background:#eee;color:#888;margin-bottom:0"></div>'
+       +'<div class="fg" style="margin:0"><label>Nota</label><input value="El jefe gestiona desde su vista" disabled style="background:#eee;color:#888;margin-bottom:0"></div>'
+      :'<div class="fg" style="margin:0"><label>Dia sugerido</label><select class="s-dia" data-i="'+i+'">'
+        +'<option value="1"'+(s.dia===1?' selected':'')+'>Dia 1</option>'
+        +'<option value="2"'+(s.dia===2?' selected':'')+'>Dia 2</option>'
+        +'<option value="3"'+(s.dia===3?' selected':'')+'>Dia 3</option>'
+        +'</select></div>'
+       +'<div class="fg" style="margin:0"><label>Hora sugerida</label><input type="time" class="s-hora" data-i="'+i+'" value="'+s.hora+'"></div>'
+       +'<div class="fg" style="margin:0"><label>Modalidad</label><select class="s-modo" data-i="'+i+'">'
+        +'<option>Presencial</option><option>Virtual (Teams)</option><option>Hibrido</option>'
+        +'</select></div>';
+    h+='<div class="'+iCls+'">'
+      +'<div class="ses-item-top">'
+        +'<div class="'+tCls+'" data-i="'+i+'" id="st-'+i+'">'+(iF||isO||s.inc?'v':'')+'</div>'
+        +'<span class="ses-icon">'+getIco(s.k)+'</span>'
+        +'<div class="ses-nom">'+s.k+(s.dur===120?' (2h)':'')+'</div>'
+        +tag
+      +'</div>'
+      +'<div class="'+dCls+'" id="sd-'+i+'">'+detH+'</div>'
+    +'</div>';
+  });
+  document.getElementById('ses-grid').innerHTML=h;
+  document.querySelectorAll('.ses-tog:not(.dis)').forEach(function(el){
+    el.addEventListener('click',function(){
+      var i=parseInt(this.dataset.i);
+      tmpSes[i].inc=!tmpSes[i].inc;
+      this.classList.toggle('on',tmpSes[i].inc);
+      this.textContent=tmpSes[i].inc?'v':'';
+      document.getElementById('sd-'+i).classList.toggle('on',tmpSes[i].inc);
+    });
+  });
+  document.querySelectorAll('.s-dia').forEach(function(el){el.addEventListener('change',function(){tmpSes[parseInt(this.dataset.i)].dia=parseInt(this.value)})});
+  document.querySelectorAll('.s-hora').forEach(function(el){el.addEventListener('change',function(){tmpSes[parseInt(this.dataset.i)].hora=this.value})});
+  document.querySelectorAll('.s-modo').forEach(function(el){el.addEventListener('change',function(){tmpSes[parseInt(this.dataset.i)].modo=this.value})});
+}
+
+function buildResumen(){
+  var nom=document.getElementById('f-nom').value.trim();
+  var inc=tmpSes.filter(function(s){return s.inc});
+  var h='<div class="card" style="margin-bottom:12px">'
+    +'<div style="font-size:15px;font-weight:700;margin-bottom:5px">'+nom+'   <span style="font-size:12px;color:var(--t2);font-weight:400">'+document.getElementById('f-id').value+'</span></div>'
+    +'<div style="font-size:12px;color:var(--t2)">'+document.getElementById('f-cargo').value+' - '+document.getElementById('f-area').value+'</div>'
+    +'<div style="font-size:12px;color:var(--t2)">Ingreso: '+fdate(document.getElementById('f-fecha').value)+' - Jefe: '+document.getElementById('f-jefe').value+'</div>'
+    +'</div>';
+  [1,2,3].forEach(function(d){
+    var ds=inc.filter(function(s){return s.dia===d});
+    if(!ds.length)return;
+    h+='<div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;margin:10px 0 5px">Dia '+d+'</div>';
+    ds.forEach(function(s){
+      h+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:13px">'
+        +'<span>'+getIco(s.k)+'</span>'
+        +'<span style="font-weight:700;flex:1">'+s.k+(s.dur===120?' (2h)':'')+'</span>'
+        +'<span style="color:var(--t2);font-size:12px">'+s.hora+' - '+amin(s.hora,s.dur)+'</span>'
+        +(s.tipo==='fijo'?'<span class="badge bgg" style="font-size:10px">Fijo</span>':s.tipo==='ob'?'<span class="badge bga" style="font-size:10px">Obligatoria</span>':'<span class="badge bgw" style="font-size:10px">Opcional</span>')
+        +'</div>';
+    });
+  });
+  h+='<div class="alw" style="margin-top:12px;font-size:12px">Los equipos y el jefe inmediato veran sus sesiones en la vista de equipos. El PDF final se genera al completar el 100%.</div>';
+  document.getElementById('resumen').innerHTML=h;
+}
+
+function guardarEmp(){
+  var nom=document.getElementById('f-nom').value.trim(),oid=document.getElementById('f-id').value.trim();
+  var ses={};
+  tmpSes.filter(function(s){return s.inc}).forEach(function(s){
+    ses[s.k]={dia:s.dia,hora:s.hora,dur:s.dur,tipo:s.tipo,st:'pendiente',expositor:'',modo:s.modo,firma:''};
+  });
+  emps.push({nom:nom,id:oid,cargo:document.getElementById('f-cargo').value,area:document.getElementById('f-area').value,fecha:document.getElementById('f-fecha').value,jefe:document.getElementById('f-jefe').value,email:document.getElementById('f-email').value,ses:ses});
+  guardar('e',emps);cM('m-emp');mostrarPaso(1);rEmps();rDash();
+}
+
+// RENDER EMPLEADOS HR
+function rEmps(){
+  var c=document.getElementById('lista-emps');
+  if(!emps.length){c.innerHTML='<p style="color:var(--t2);font-size:13px">No hay empleados.</p>';return}
+  var h='';
+  emps.forEach(function(e,ei){
+    var p=pct(e),done=p===100,cols='';
+    [1,2,3].forEach(function(d){
+      var ent=Object.entries(e.ses).filter(function(x){return x[1].dia===d});
+      var hd='dhd '+(d===1?'d1':d===2?'d2':'d3');
+      var dico=d===1?'Dia 1':d===2?'Dia 2':'Dia 3';
+      if(!ent.length){cols+='<div class="dcol"><div class="'+hd+'">'+dico+'</div><div class="dbody"><p style="font-size:11px;color:var(--t2)">Sin sesiones</p></div></div>';return}
+      ent.sort(function(a,b){return a[1].hora>b[1].hora?1:-1});
+      var chips='';
+      ent.forEach(function(x){
+        var k=x[0],s=x[1];
+        var cl=s.st==='ok'?'cok':s.tipo==='fijo'?'cfijo':s.tipo==='ob'?'cob':s.st==='re'?'cre':s.st==='agendado'?'cag':'cop';
+        var bH=(s.tipo==='ob'&&s.st!=='ok')
+          ?'<button class="cbtn cbhr js-repro" data-ei="'+ei+'" data-k="'+encodeURIComponent(k)+'">Reprogramar</button>'
+          :(s.st==='agendado'?'<button class="cbtn cbhr js-cambiar-hora" data-ei="'+ei+'" data-k="'+encodeURIComponent(k)+'">Cambiar hora</button>':'');
+        chips+='<div class="chip '+cl+'">'
+          +'<div class="chip-top"><span class="chip-ico">'+getIco(k)+'</span><span class="chip-nom">'+k+(s.dur===120?' (2h)':'')+'</span></div>'
+          +'<div class="chor">'+s.hora+'-'+amin(s.hora,s.dur)+'</div>'
+          +(s.expositor?'<div class="cexp">'+s.expositor+'</div>':'<div class="cpend">Sin agendar</div>')
+          +(s.st==='ok'?'<div style="font-size:10px;color:#1a5e2a;font-weight:700">Firmado</div>':'')
+          +'<div class="cacc">'+bH+'</div>'
+          +'</div>';
+      });
+      cols+='<div class="dcol"><div class="'+hd+'">'+dico+'</div><div class="dbody">'+chips+'</div></div>';
+    });
+    var dn=Object.values(e.ses).filter(function(s){return s.st==='ok'}).length;
+    var tot=Object.keys(e.ses).length;
+    var bcl=done?'bgg':p>50?'bga':'bgw';
+    var ban=done
+      ?'<div class="cierre"><div><div style="font-weight:700">Onboarding completado - Certificado generado</div><div style="font-size:11px;opacity:.85;margin-top:2px">Todas las sesiones firmadas</div></div><button class="btn bs bsm js-cert" data-ei="'+ei+'">Descargar certificado</button></div>'
+      :'<div class="ali" style="margin-top:10px;font-size:12px">El certificado final se generara cuando se completen todas las sesiones ('+dn+'/'+tot+' firmadas).</div>';
+    h+='<div class="ec">'
+      +'<div class="ec-top">'
+        +'<div><div class="ec-nom">'+e.nom+'</div><div class="ec-meta">'+e.id+' - '+(e.cargo||'--')+' - '+(e.area||'--')+' - Jefe: '+(e.jefe||'--')+' - Ingreso: '+fdate(e.fecha)+'</div></div>'
+        +'<div style="display:flex;gap:6px;align-items:center">'
+          +'<span class="badge '+bcl+'">'+dn+'/'+tot+'</span>'
+          +'<button class="btn bo bsm js-add-ses" data-ei="'+ei+'">+ Sesion</button>'
+          +'<button class="btn bd2 bsm js-del" data-ei="'+ei+'">Borrar</button>'
+        +'</div>'
+      +'</div>'
+      +'<div class="pw"><div class="pb" style="width:'+p+'%"></div></div>'
+      +'<p style="font-size:11px;color:var(--t2);margin-bottom:8px">'+p+'% completado</p>'
+      +'<div class="dias">'+cols+'</div>'+ban
+    +'</div>';
+  });
+  c.innerHTML=h;
+  c.querySelectorAll('.js-repro').forEach(function(b){b.addEventListener('click',function(){abrirRepro(parseInt(this.dataset.ei),decodeURIComponent(this.dataset.k))})});
+  c.querySelectorAll('.js-del').forEach(function(b){b.addEventListener('click',function(){pEi=parseInt(this.dataset.ei);document.getElementById('del-nom').textContent=emps[pEi].nom;aM('m-del')})});
+  c.querySelectorAll('.js-cert').forEach(function(b){b.addEventListener('click',function(){genCierre2(parseInt(this.dataset.ei))})});
+  c.querySelectorAll('.js-cambiar-hora').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ei=parseInt(this.dataset.ei),k=decodeURIComponent(this.dataset.k);
+      var s=emps[ei].ses[k];
+      document.getElementById('cambiar-info').innerHTML=
+        '<div style="background:var(--bg);border-radius:8px;padding:10px;font-size:13px">'
+        +'<b>Sesion:</b> '+k+'&nbsp;&nbsp;<b>Empleado:</b> '+emps[ei].nom+'<br>'
+        +'<b>Horario actual:</b> Dia '+s.dia+' a las '+s.hora+' - '+s.expositor
+        +'</div>';
+      document.getElementById('ch-dia').value=s.dia;
+      document.getElementById('ch-hora').value=s.hora;
+      document.getElementById('ch-mot').value='';
+      document.getElementById('ch-aut').value='';
+      pEi=ei;pSk=k;
+      aM('m-cambiar');
+    });
+  });
+  c.querySelectorAll('.js-add-ses').forEach(function(b){
+    b.addEventListener('click',function(){
+      pEi=parseInt(this.dataset.ei);
+      buildAddSesGrid(pEi);
+      aM('m-add-ses');
+    });
+  });
+}
+// REPROGRAMAR
+function abrirRepro(ei,sk){
+  pEi=ei;pSk=sk;
+  document.getElementById('re-mot').value='';document.getElementById('re-aut').value='';document.getElementById('re-hora').value='';
+  aM('m-repro');
+}
+document.getElementById('btn-cr').addEventListener('click',function(){cM('m-repro')});
+document.getElementById('btn-okr').addEventListener('click',function(){
+  var mot=document.getElementById('re-mot').value.trim(),aut=document.getElementById('re-aut').value.trim();
+  if(!mot||!aut){alert('Completa el motivo y quien autoriza.');return}
+  var nd=parseInt(document.getElementById('re-dia').value),nh=document.getElementById('re-hora').value;
+  emps[pEi].ses[pSk].dia=nd;if(nh)emps[pEi].ses[pSk].hora=nh;
+  emps[pEi].ses[pSk].st='re';emps[pEi].ses[pSk].nota='Autorizado por '+aut+': '+mot;
+  guardar('e',emps);cM('m-repro');rEmps();
+});
+document.getElementById('btn-cd').addEventListener('click',function(){cM('m-del')});
+document.getElementById('btn-okd').addEventListener('click',function(){
+  if(pEi===null)return;
+  emps.splice(pEi,1);guardar('e',emps);pEi=null;cM('m-del');rEmps();rDash();
+});
+document.getElementById('btn-cch').addEventListener('click',function(){cM('m-cambiar')});
+document.getElementById('btn-okch').addEventListener('click',function(){
+  var nd=parseInt(document.getElementById('ch-dia').value);
+  var nh=document.getElementById('ch-hora').value;
+  var mot=document.getElementById('ch-mot').value.trim();
+  var aut=document.getElementById('ch-aut').value.trim();
+  if(!nh||!mot||!aut){alert('Completa todos los campos.');return}
+  // Check conflicts for this employee at new time
+  var conflicto=null;
+  Object.entries(emps[pEi].ses).forEach(function(x){
+    var k=x[0],s=x[1];
+    if(k===pSk) return;
+    if(s.dia===nd&&s.hora===nh&&(s.st==='agendado'||s.st==='ok')){
+      conflicto=k;
+    }
+  });
+  if(conflicto){
+    alert('Conflicto: el empleado ya tiene la sesion de '+conflicto+' el Dia '+nd+' a las '+nh+'. Selecciona otra hora.');
+    return;
+  }
+  emps[pEi].ses[pSk].dia=nd;
+  emps[pEi].ses[pSk].hora=nh;
+  emps[pEi].ses[pSk].notaHR='Cambiado por HR ('+aut+'): '+mot;
+  guardar('e',emps);
+  cM('m-cambiar');
+  rEmps();
+  alert('Horario actualizado correctamente.');
+});
+
+// VISTA EQUIPOS - incluye Jefe inmediato
+function buildEqGrid(){
+  document.getElementById('eq-sel').style.display='block';
+  document.getElementById('eq-view').style.display='none';
+  document.getElementById('eq-sub').textContent='Selecciona tu equipo para ver tus sesiones';
+  var h='';
+  EQUIPOS_CON_ICONO.forEach(function(eq){
+    var pend=emps.reduce(function(a,e){return a+(e.ses[eq.k]&&e.ses[eq.k].st!=='ok'?1:0)},0);
+    h+='<div class="eq-card js-eq" data-eq="'+eq.k+'">'
+      +'<div class="eq-icon">'+eq.ico+'</div>'
+      +'<div class="eq-name">'+eq.k+'</div>'
+      +(pend>0?'<div class="eq-badge">'+pend+' pendiente'+(pend>1?'s':'')+'</div>':'<div class="eq-nopend">Al dia</div>')
+    +'</div>';
+  });
+  document.getElementById('eq-grid').innerHTML=h;
+  document.querySelectorAll('.js-eq').forEach(function(b){b.addEventListener('click',function(){mostrarEq(this.dataset.eq)})});
+}
+
+function mostrarEq(eq){
+  eqActual=eq;
+  document.getElementById('eq-sel').style.display='none';
+  document.getElementById('eq-view').style.display='block';
+  document.getElementById('eq-tit').textContent=getIco(eq)+' '+eq;
+  document.getElementById('eq-sub').textContent='Vista del equipo '+eq;
+
+  // Count pending
+  // For "Jefe inmediato": never group (each employee has a different jefe)
+  // For all other teams: group by fecha (same day = same session)
+  var porFecha={};
+  emps.forEach(function(e,ei){
+    var s=e.ses[eq];
+    if(s&&s.st!=='ok'){
+      var f;
+      if(eq==='Jefe inmediato'){
+        // Use unique key per employee so they never group
+        f=(e.fecha||'x')+'_'+ei;
+      } else {
+        f=e.fecha||'x';
+      }
+      if(!porFecha[f])porFecha[f]=[];
+      porFecha[f].push({e:e,ei:ei,s:s});
+    }
+  });
+  var pendFirmar=emps.reduce(function(a,e){return a+(e.ses[eq]&&e.ses[eq].st==='agendado'?1:0)},0);
+  var pendAgendar=emps.reduce(function(a,e){return a+(e.ses[eq]&&e.ses[eq].st==='pendiente'?1:0)},0);
+  var total=Object.values(porFecha).reduce(function(a,g){return a+g.length},0);
+
+  if(!total){
+    document.getElementById('eq-info-box').innerHTML='<div class="als">Todo al dia. No tienes sesiones pendientes.</div>';
+    document.getElementById('eq-panel-ag').innerHTML='';
+    document.getElementById('eq-panel-fi').innerHTML='';
+    return;
+  }
+  document.getElementById('eq-info-box').innerHTML='<div class="ali">Tienes '+total+' sesion'+(total>1?'es':'')+' pendiente'+(total>1?'s':'')+'. Primero agenda tu horario, luego firma cuando hayas dictado la sesion.</div>';
+
+  // Update tab labels
+  document.getElementById('etab-ag').textContent='📅 Agendar horarios'+(pendAgendar>0?' ('+pendAgendar+')':'');
+  document.getElementById('etab-fi').textContent='✍ Firmar sesiones'+(pendFirmar>0?' ('+pendFirmar+')':'');
+
+  // --- PANEL AGENDAR ---
+  var hAg='';
+  // Get all occupied slots for conflict detection
+  var ocupados={};
+  emps.forEach(function(e){
+    Object.values(e.ses).forEach(function(s){
+      if(s.st==='agendado'||s.st==='ok'){
+        var key='d'+s.dia+'_'+s.hora;
+        if(!ocupados[key])ocupados[key]=[];
+        ocupados[key].push(s.expositor||'');
+      }
+    });
+  });
+
+  Object.keys(porFecha).sort().forEach(function(fecha){
+    var grupo=porFecha[fecha],s=grupo[0].s;
+    var eis=grupo.map(function(g){return g.ei});
+    var esGrupo=grupo.length>1;
+    hAg+='<div class="emp-pen'+(esGrupo?' grupo':'')+'">';
+    if(esGrupo){
+      hAg+='<div class="grupo-tag">👥 Sesion grupal - '+fdate(fecha)+'</div>';
+      grupo.forEach(function(g){hAg+='<div style="font-size:13px;font-weight:700">'+g.e.nom+' <span style="font-size:11px;color:var(--t2);font-weight:400">'+g.e.id+'</span></div>'});
+      hAg+='<div style="font-size:12px;color:var(--t2);margin:4px 0 10px">Una sesion de '+(s.dur===120?'2h':'30 min')+' cubre a todos</div>';
+    } else {
+      hAg+='<div style="font-size:14px;font-weight:700">'+grupo[0].e.nom+'</div>';
+      hAg+='<div style="font-size:12px;color:var(--t2);margin:3px 0 10px">'+grupo[0].e.id+' - Ingreso: '+fdate(grupo[0].e.fecha)+'</div>';
+    }
+    if(s.st==='agendado'){
+      hAg+='<div class="als" style="font-size:12px;margin-bottom:8px">Agendado: Dia '+s.dia+' a las '+s.hora+' - '+s.expositor+'</div>';
+      hAg+='<div class="alw" style="font-size:12px;margin-top:4px">El horario ya fue confirmado. Solo HR puede modificarlo.</div>';
+    } else {
+      hAg+='<button class="btn bp bsm js-ag" data-eis="'+eis.join(',')+'">📅 Seleccionar mi horario</button>';
+    }
+    hAg+='</div>';
+  });
+  if(!hAg) hAg='<div class="als">Todas las sesiones ya tienen horario asignado. Ve a la pestana de Firmar.</div>';
+  document.getElementById('eq-panel-ag').innerHTML=hAg;
+
+  // --- PANEL FIRMAR ---
+  var hFi='';
+  Object.keys(porFecha).sort().forEach(function(fecha){
+    var grupo=porFecha[fecha],s=grupo[0].s;
+    var eis=grupo.map(function(g){return g.ei});
+    var esGrupo=grupo.length>1;
+    if(s.st!=='agendado') return;
+    hFi+='<div class="emp-pen'+(esGrupo?' grupo':'')+'">';
+    if(esGrupo){
+      hFi+='<div class="grupo-tag">👥 Sesion grupal</div>';
+      grupo.forEach(function(g){hFi+='<div style="font-size:13px;font-weight:700">'+g.e.nom+'</div>'});
+    } else {
+      hFi+='<div style="font-size:14px;font-weight:700">'+grupo[0].e.nom+'</div>';
+      hFi+='<div style="font-size:12px;color:var(--t2);margin:2px 0 6px">'+grupo[0].e.id+'</div>';
+    }
+    hFi+='<div class="als" style="font-size:12px;margin:8px 0 10px">Dia '+s.dia+' a las '+s.hora+' - '+s.expositor+'</div>';
+    hFi+='<button class="btn bs bsm js-firmar-eq" data-eis="'+eis.join(',')+'">✍ Firmar - sesion completada</button>';
+    hFi+='</div>';
+  });
+  if(!hFi) hFi='<div class="ali">No hay sesiones listas para firmar aun. Primero agenda tu horario en la pestana anterior.</div>';
+  document.getElementById('eq-panel-fi').innerHTML=hFi;
+
+  // Bind events for both panels
+  document.querySelectorAll('.js-ag').forEach(function(b){
+    b.addEventListener('click',function(){abrirAgendar(this.dataset.eis.split(',').map(Number))});
+  });
+  document.querySelectorAll('.js-firmar-eq').forEach(function(b){
+    b.addEventListener('click',function(){abrirFirmaModal(this.dataset.eis.split(',').map(Number))});
+  });
+}
+document.getElementById('btn-eq-back').addEventListener('click',buildEqGrid);
+document.getElementById('etab-ag').addEventListener('click',function(){
+  this.classList.add('on');document.getElementById('etab-fi').classList.remove('on');
+  document.getElementById('eq-panel-ag').classList.add('on');document.getElementById('eq-panel-fi').classList.remove('on');
+});
+document.getElementById('etab-fi').addEventListener('click',function(){
+  this.classList.add('on');document.getElementById('etab-ag').classList.remove('on');
+  document.getElementById('eq-panel-fi').classList.add('on');document.getElementById('eq-panel-ag').classList.remove('on');
+});
+
+// AGENDAR
+function abrirAgendar(eis){
+  agPend={eis:eis,eq:eqActual};
+  var s=emps[eis[0]].ses[eqActual];
+  document.getElementById('ag-tit').textContent=getIco(eqActual)+' Agendar - '+eqActual;
+  document.getElementById('ag-sub').textContent='Selecciona dia y hora para dictar la sesion'+(s.dur===120?' (2 horas)':' (30 min)');
+  var iH=eis.length>1
+    ?'<div class="grupo-tag" style="margin-bottom:8px">Sesion grupal</div>'
+      +eis.map(function(ei){return'<div style="font-size:13px;font-weight:700;margin-bottom:2px">'+emps[ei].nom+'</div>'}).join('')
+      +'<div style="font-size:12px;color:var(--t2);margin-bottom:12px">Una sesion cubre a todos los del grupo</div>'
+    :'<div style="font-size:14px;font-weight:700;margin-bottom:2px">'+emps[eis[0]].nom+'</div>'
+      +'<div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+emps[eis[0]].id+(agPend&&agPend.eq==='Jefe inmediato'?' - Jefe: '+emps[eis[0]].jefe:'')+'</div>';
+  document.getElementById('ag-emps-info').innerHTML=iH;
+  document.getElementById('ag-dia').value=s.dia||'1';
+  document.getElementById('ag-hora').value=s.hora||'';
+  document.getElementById('ag-modo').value=s.modo||'Presencial';
+  document.getElementById('ag-exp').value=s.expositor||'';
+  aM('m-ag');
+}
+document.getElementById('btn-cag').addEventListener('click',function(){cM('m-ag')});
+document.getElementById('btn-okag').addEventListener('click',function(){
+  var exp=document.getElementById('ag-exp').value.trim(),hora=document.getElementById('ag-hora').value;
+  if(!exp||!hora){alert('Completa tu nombre y la hora.');return}
+  var dia=parseInt(document.getElementById('ag-dia').value),modo=document.getElementById('ag-modo').value;
+  // Check for time conflicts PER EMPLOYEE
+  // Rule: same employee cannot have two sessions at same day+time
+  var conflictos=[];
+  agPend.eis.forEach(function(ei){
+    var e=emps[ei];
+    Object.entries(e.ses).forEach(function(x){
+      var k=x[0],s=x[1];
+      // Skip the session being scheduled
+      if(k===agPend.eq) return;
+      if(s.dia===dia && s.hora===hora && (s.st==='agendado'||s.st==='ok')){
+        conflictos.push({emp:e.nom, sesion:k, expositor:s.expositor||'--'});
+      }
+    });
+  });
+  if(conflictos.length>0){
+    var msg='No es posible agendar esta hora.\n\n';
+    conflictos.forEach(function(c){
+      msg+='El empleado '+c.emp+' ya tiene la sesion de '+c.sesion+' el Dia '+dia+' a las '+hora+'.\n';
+    });
+    msg+='\nPor favor selecciona una hora diferente.';
+    alert(msg);
+    return;
+  }
+  agPend.eis.forEach(function(ei){
+    emps[ei].ses[agPend.eq].dia=dia;emps[ei].ses[agPend.eq].hora=hora;
+    emps[ei].ses[agPend.eq].modo=modo;emps[ei].ses[agPend.eq].expositor=exp;
+    emps[ei].ses[agPend.eq].st='agendado';
+  });
+  guardar('e',emps);cM('m-ag');
+  mostrarEq(eqActual);
+  alert('Listo. Agendado el Dia '+dia+' a las '+hora+'. Ve a la pestana de Firmar cuando hayas dictado la sesion.');
+});
+
+// FIRMA TABS
+document.getElementById('stab-draw').addEventListener('click',function(){
+  sigModo='draw';
+  this.classList.add('on');document.getElementById('stab-pre').classList.remove('on');
+  document.getElementById('spanel-draw').classList.add('on');document.getElementById('spanel-pre').classList.remove('on');
+});
+document.getElementById('stab-pre').addEventListener('click',function(){
+  sigModo='pre';
+  this.classList.add('on');document.getElementById('stab-draw').classList.remove('on');
+  document.getElementById('spanel-pre').classList.add('on');document.getElementById('spanel-draw').classList.remove('on');
+  renderSigPre();
+});
+document.getElementById('sig-nombre').addEventListener('input',renderSigPre);
+
+function renderSigPre(){
+  var nom=document.getElementById('sig-nombre').value.trim();
+  var grid=document.getElementById('sig-pre-grid');
+  if(!nom){
+    grid.innerHTML='<div style="font-size:12px;color:var(--t2);grid-column:1/-1;padding:10px">Escribe tu nombre arriba para ver las opciones de firma.</div>';
+    return;
+  }
+  grid.innerHTML=SIG_ESTILOS.map(function(st,i){
+    return '<div class="sig-pre-opt'+(sigEstiloSel===i?' sel':'')+'" data-i="'+i+'">'
+      +'<canvas id="sigpre'+i+'" width="230" height="65"></canvas>'
+      +'</div>';
+  }).join('');
+  SIG_ESTILOS.forEach(function(st,i){
+    var cv=document.getElementById('sigpre'+i);
+    var ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.font=st.font;ctx.fillStyle=st.color;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(nom,cv.width/2,cv.height/2);
+  });
+  grid.querySelectorAll('.sig-pre-opt').forEach(function(el){
+    el.addEventListener('click',function(){
+      sigEstiloSel=parseInt(this.dataset.i);
+      grid.querySelectorAll('.sig-pre-opt').forEach(function(x){x.classList.remove('sel')});
+      this.classList.add('sel');
+    });
+  });
+}
+
+function getSig(){
+  if(sigModo==='draw'){
+    var cv=document.getElementById('sigcanvas');
+    var d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;
+    if(!d.some(function(v){return v!==0}))return null;
+    return cv.toDataURL('image/png');
+  }
+  var nom=document.getElementById('sig-nombre').value.trim();
+  if(!nom)return null;
+  var st=SIG_ESTILOS[sigEstiloSel];
+  var cv=document.createElement('canvas');cv.width=400;cv.height=100;
+  var ctx=cv.getContext('2d');
+  ctx.font=st.font;ctx.fillStyle=st.color;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(nom,cv.width/2,cv.height/2);
+  var d=ctx.getImageData(0,0,cv.width,cv.height).data;
+  return d.some(function(v){return v!==0})?cv.toDataURL('image/png'):null;
+}
+
+function abrirFirmaModal(eis){
+  firmaPend={eis:eis,eq:eqActual};
+  var s=emps[eis[0]].ses[eqActual];
+  var nombs=eis.map(function(ei){return emps[ei].nom}).join(' y ');
+  document.getElementById('f-msub').textContent=getIco(eqActual)+' '+eqActual+' - '+nombs;
+  document.getElementById('firma-info').innerHTML=
+    '<div style="background:var(--bg);border-radius:9px;padding:12px;font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">'
+    +'<div><span style="font-size:10px;color:var(--t2)">EMPLEADO(S)</span><div style="font-weight:700">'+nombs+'</div></div>'
+    +'<div><span style="font-size:10px;color:var(--t2)">SESION</span><div style="font-weight:700">'+getIco(eqActual)+' '+eqActual+'</div></div>'
+    +'<div><span style="font-size:10px;color:var(--t2)">DIA Y HORA</span><div style="font-weight:700">Dia '+s.dia+' a las '+s.hora+'</div></div>'
+    +'<div><span style="font-size:10px;color:var(--t2)">EXPOSITOR</span><div style="font-weight:700">'+s.expositor+'</div></div>'
+    +'</div>';
+  sigModo='draw';sigEstiloSel=0;
+  document.getElementById('stab-draw').classList.add('on');document.getElementById('stab-pre').classList.remove('on');
+  document.getElementById('spanel-draw').classList.add('on');document.getElementById('spanel-pre').classList.remove('on');
+  document.getElementById('sig-nombre').value='';
+  aM('m-firma');
+  setTimeout(function(){
+    var cv=document.getElementById('sigcanvas');
+    sigCtx=cv.getContext('2d');sigCtx.strokeStyle='#1a2433';sigCtx.lineWidth=2.5;sigCtx.lineCap='round';sigCtx.lineJoin='round';
+    sigCtx.clearRect(0,0,cv.width,cv.height);sigOn=false;
+    function pos(ev,c){var r=c.getBoundingClientRect(),src=ev.touches?ev.touches[0]:ev;return{x:(src.clientX-r.left)*(c.width/r.width),y:(src.clientY-r.top)*(c.height/r.height)}}
+    cv.onmousedown=function(ev){sigOn=true;var p=pos(ev,cv);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y)};
+    cv.onmousemove=function(ev){if(!sigOn)return;var p=pos(ev,cv);sigCtx.lineTo(p.x,p.y);sigCtx.stroke()};
+    cv.onmouseup=cv.onmouseleave=function(){sigOn=false};
+    cv.ontouchstart=function(ev){ev.preventDefault();sigOn=true;var p=pos(ev,cv);sigCtx.beginPath();sigCtx.moveTo(p.x,p.y)};
+    cv.ontouchmove=function(ev){ev.preventDefault();if(!sigOn)return;var p=pos(ev,cv);sigCtx.lineTo(p.x,p.y);sigCtx.stroke()};
+    cv.ontouchend=function(){sigOn=false};
+  },80);
+}
+document.getElementById('btn-bsig').addEventListener('click',function(){
+  if(sigCtx){var cv=document.getElementById('sigcanvas');sigCtx.clearRect(0,0,cv.width,cv.height)}
+});
+document.getElementById('btn-cf').addEventListener('click',function(){cM('m-firma')});
+document.getElementById('btn-okf').addEventListener('click',function(){
+  var sig=getSig();
+  if(!sig){alert(sigModo==='draw'?'Dibuja tu firma antes de continuar.':'Escribe tu nombre y selecciona un estilo de firma.');return}
+  var fechaHoy=hoy();
+  firmaPend.eis.forEach(function(ei){
+    emps[ei].ses[firmaPend.eq].st='ok';
+    emps[ei].ses[firmaPend.eq].fechaOk=fechaHoy;
+    emps[ei].ses[firmaPend.eq].firma=sig;
+  });
+  guardar('e',emps);
+  cM('m-firma');
+  firmaPend.eis.forEach(function(ei){
+    if(pct(emps[ei])===100){
+      setTimeout(function(){
+        var idx=ei;
+        genCierrePDF(emps[idx]);
+        var reg={id:Date.now()+idx,empNom:emps[idx].nom,empId:emps[idx].id,fecha:fechaHoy,ei:idx};
+        fmts.push(reg);guardar('fm',fmts);
+        alert('El onboarding de '+emps[idx].nom+' esta completo. El certificado final ha sido generado.');
+      },400);
+    }
+  });
+  mostrarEq(eqActual);
+});
+
+// CERTIFICADOS HR
+function rFmts(){
+  var c=document.getElementById('lista-fmts');
+  if(!fmts.length){c.innerHTML='<p style="color:var(--t2);font-size:13px">Los certificados apareceran aqui cuando los empleados completen el 100% de sus sesiones.</p>';return}
+  var h='';
+  fmts.forEach(function(f,i){
+    h+='<div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 18px">'
+      +'<div style="font-size:32px">🏆</div>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-weight:700;font-size:14px">'+f.empNom+' <span style="font-size:11px;color:var(--t2)">'+f.empId+'</span></div>'
+        +'<div style="font-size:12px;color:var(--t2)">Certificado de cierre - '+f.fecha+'</div>'
+      +'</div>'
+      +'<button class="btn bp bsm js-dl" data-i="'+i+'">📄 Descargar PDF</button>'
+      +'<button class="btn bd2 bsm js-df" data-i="'+i+'">🗑</button>'
+    +'</div>';
+  });
+  c.innerHTML=h;
+  c.querySelectorAll('.js-dl').forEach(function(b){
+    b.addEventListener('click',function(){
+      var f=fmts[parseInt(this.dataset.i)];
+      var e=emps[f.ei];
+      if(!e){alert('No se encontro el empleado.');return}
+      genCierrePDF(e);
+    });
+  });
+  c.querySelectorAll('.js-df').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(!confirm('Eliminar este certificado del registro?'))return;
+      fmts.splice(parseInt(this.dataset.i),1);guardar('fm',fmts);rFmts();
+    });
+  });
+}
+function genCierre2(ei){genCierrePDF(emps[parseInt(ei)])}
+
+function genCierrePDF(e){
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({unit:'mm',format:'a4'});
+  var W=210,M=18,CW=W-M*2;
+  var logoData='data:image/jpeg;base64,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';
+
+  // ---- PAGINA 1: CERTIFICADO ----
+  // Logo
+  try{doc.addImage(logoData,'JPEG',M,10,45,18,'','FAST')}catch(err){}
+  // Header text
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);
+  doc.text('Human Resources',W-M,17,{align:'right'});
+  doc.text('Certificado de cierre de onboarding',W-M,22,{align:'right'});
+  // Blue line
+  doc.setDrawColor(27,108,168);doc.setLineWidth(1.2);doc.line(M,30,W-M,30);
+
+  // Title
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(12,68,124);
+  doc.text('CERTIFICADO DE CIERRE DE ONBOARDING',W/2,42,{align:'center'});
+
+  // Employee box
+  doc.setFillColor(245,248,252);doc.rect(M,48,CW,32,'F');
+  doc.setDrawColor(27,108,168);doc.setLineWidth(.4);doc.rect(M,48,CW,32);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(80,80,80);
+  doc.text('Se certifica que el/la colaborador/a:',W/2,56,{align:'center'});
+  doc.setFont('helvetica','bold');doc.setFontSize(15);doc.setTextColor(27,108,168);
+  doc.text(e.nom,W/2,64,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(80,80,80);
+  doc.text('Omega ID: '+e.id+'   Cargo: '+(e.cargo||'--')+'   Area: '+(e.area||'--'),W/2,70,{align:'center'});
+  doc.text('Fecha de ingreso: '+fdate(e.fecha)+'   Jefe inmediato: '+(e.jefe||'--'),W/2,76,{align:'center'});
+
+  // Completion text
+  doc.setFontSize(10);doc.setTextColor(60,60,60);
+  doc.text('completo satisfactoriamente el proceso de onboarding de Omega Healthcare,',W/2,90,{align:'center'});
+  doc.setFont('helvetica','bold');
+  doc.text('habiendo asistido y firmado todas las sesiones requeridas en los 3 dias habiles establecidos.',W/2,97,{align:'center'});
+
+  // Sessions table
+  var y=108;
+  doc.setFillColor(27,108,168);doc.rect(M,y,CW,7,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
+  doc.text('Sesion',M+2,y+5);doc.text('Dia',M+60,y+5);doc.text('Hora',M+76,y+5);
+  doc.text('Fecha completada',M+96,y+5);doc.text('Expositor',M+136,y+5);
+  y+=7;
+  Object.entries(e.ses).forEach(function(x,i){
+    var k=x[0],s=x[1];
+    if(i%2===0)doc.setFillColor(248,250,253);else doc.setFillColor(255,255,255);
+    doc.rect(M,y,CW,6,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(40,40,40);
+    doc.text(k+(s.dur===120?' (2h)':''),M+2,y+4.3);
+    doc.text('Dia '+s.dia,M+60,y+4.3);
+    doc.text(s.hora||'--',M+76,y+4.3);
+    doc.text(s.fechaOk||'--',M+96,y+4.3);
+    // Truncate long names
+    var exp=s.expositor||'--';
+    if(exp.length>22)exp=exp.slice(0,20)+'...';
+    doc.text(exp,M+136,y+4.3);
+    y+=6;
+  });
+
+  // Seal
+  y+=8;
+  doc.setFillColor(232,245,233);doc.rect(M,y,CW,20,'F');
+  doc.setDrawColor(39,168,74);doc.setLineWidth(.5);doc.rect(M,y,CW,20);
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,94,42);
+  doc.text('Proceso de onboarding completado exitosamente',W/2,y+8,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(80,80,80);
+  doc.text('Fecha de emision: '+hoy(),W/2,y+15,{align:'center'});
+
+  // Footer p1
+  doc.setDrawColor(200,200,200);doc.setLineWidth(.3);doc.line(M,284,W-M,284);
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(160,160,160);
+  doc.text('Omega Healthcare - Human Resources - Certificado oficial  |  Pagina 1 de 2',W/2,288,{align:'center'});
+
+  // ---- PAGINA 2: FIRMAS ----
+  doc.addPage();
+
+  // Logo again
+  try{doc.addImage(logoData,'JPEG',M,10,45,18,'','FAST')}catch(err){}
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);
+  doc.text('Human Resources - Firmas de onboarding',W-M,17,{align:'right'});
+  doc.setDrawColor(27,108,168);doc.setLineWidth(1.2);doc.line(M,30,W-M,30);
+
+  // Title p2
+  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(12,68,124);
+  doc.text('FIRMAS DE LOS EXPOSITORES',W/2,42,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(80,80,80);
+  doc.text(e.nom+' - '+e.id,W/2,50,{align:'center'});
+
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,100,100);
+  doc.text('Cada expositor confirmo con su firma que dicto la sesion satisfactoriamente.',W/2,57,{align:'center'});
+
+  // Signatures - 2 columns, spacious layout
+  var firmasArr=Object.entries(e.ses).filter(function(x){return x[1].firma});
+  var sigY=65;
+  var sigW=82,sigH=32,colGap=10;
+  var col1X=M,col2X=M+sigW+colGap;
+  var rowH=sigH+24; // signature height + label space + margin
+
+  firmasArr.forEach(function(x,i){
+    var k=x[0],s=x[1];
+    var isLeft=i%2===0;
+    var cx=isLeft?col1X:col2X;
+
+    // New row - check if need new page
+    if(i>0&&i%2===0){
+      sigY+=rowH;
+      if(sigY+rowH>270){
+        doc.addPage();
+        try{doc.addImage(logoData,'JPEG',M,10,45,18,'','FAST')}catch(err){}
+        doc.setDrawColor(27,108,168);doc.setLineWidth(1.2);doc.line(M,30,W-M,30);
+        sigY=40;
+      }
+    }
+
+    // Signature box background
+    doc.setFillColor(252,252,252);
+    doc.setDrawColor(220,220,220);doc.setLineWidth(.3);
+    doc.rect(cx,sigY,sigW,sigH+16,'F');
+    doc.rect(cx,sigY,sigW,sigH+16);
+
+    // Session name header
+    doc.setFillColor(220,232,243);doc.rect(cx,sigY,sigW,8,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(12,68,124);
+    doc.text(k+(s.dur===120?' (2h)':''),cx+sigW/2,sigY+5.5,{align:'center'});
+
+    // Signature image
+    var imgY=sigY+9;
+    try{doc.addImage(s.firma,'PNG',cx+4,imgY,sigW-8,sigH-4,'','FAST')}catch(err){}
+
+    // Signature line
+    doc.setDrawColor(60,60,60);doc.setLineWidth(.4);
+    doc.line(cx+8,sigY+sigH+6,cx+sigW-8,sigY+sigH+6);
+
+    // Expositor name and date
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(40,40,40);
+    var expName=s.expositor||'--';
+    if(expName.length>28)expName=expName.slice(0,26)+'...';
+    doc.text(expName,cx+sigW/2,sigY+sigH+11,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(120,120,120);
+    doc.text(s.fechaOk||'--',cx+sigW/2,sigY+sigH+15,{align:'center'});
+  });
+
+  // Footer p2
+  doc.setDrawColor(200,200,200);doc.setLineWidth(.3);doc.line(M,284,W-M,284);
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(160,160,160);
+  doc.text('Omega Healthcare - Human Resources - Certificado oficial  |  Pagina 2 de 2',W/2,288,{align:'center'});
+
+  doc.save('Certificado_'+e.nom.replace(/ /g,'_')+'_'+e.id+'.pdf');
+}
+
+
+function buildAddSesGrid(ei){
+  var e=emps[ei];
+  document.getElementById('add-ses-sub').textContent='Empleado: '+e.nom+' - '+e.id;
+  // Show only sessions not already assigned
+  var faltantes=SES_DEF.filter(function(s){
+    return s.tipo!=='fijo' && !e.ses[s.k];
+  });
+  if(!faltantes.length){
+    document.getElementById('add-ses-grid').innerHTML='<div class="als">Este empleado ya tiene todas las sesiones posibles asignadas.</div>';
+    return;
+  }
+  var h='';
+  faltantes.forEach(function(s){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--bd);border-radius:9px;background:#fff">'
+      +'<div style="width:22px;height:22px;border-radius:6px;border:1.5px solid var(--bd);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0" class="add-tog" data-k="'+s.k+'" data-dia="'+s.dia+'" data-hora="'+s.hora+'" data-dur="'+s.dur+'" data-tipo="'+s.tipo+'"></div>'
+      +'<span style="font-size:16px">'+getIco(s.k)+'</span>'
+      +'<span style="font-weight:700;flex:1">'+s.k+'</span>'
+      +'<span class="ses-tag tag-op">Dia '+s.dia+' sugerido</span>'
+      +'</div>';
+  });
+  document.getElementById('add-ses-grid').innerHTML=h;
+  document.querySelectorAll('.add-tog').forEach(function(el){
+    el.addEventListener('click',function(){
+      var on=this.style.background==='rgb(27, 108, 168)';
+      this.style.background=on?'':'#1b6ca8';
+      this.style.borderColor=on?'#e0e0e0':'#1b6ca8';
+      this.textContent=on?'':'v';
+    });
+  });
+}
+
+document.getElementById('btn-cadd').addEventListener('click',function(){cM('m-add-ses')});
+document.getElementById('btn-okadd').addEventListener('click',function(){
+  var added=0;
+  document.querySelectorAll('.add-tog').forEach(function(el){
+    if(el.style.background==='rgb(27, 108, 168)'){
+      var k=el.dataset.k;
+      emps[pEi].ses[k]={
+        dia:parseInt(el.dataset.dia),
+        hora:el.dataset.hora,
+        dur:parseInt(el.dataset.dur),
+        tipo:el.dataset.tipo,
+        st:'pendiente',
+        expositor:'',
+        modo:'Presencial',
+        firma:''
+      };
+      added++;
+    }
+  });
+  if(!added){alert('Selecciona al menos una sesion.');return}
+  guardar('e',emps);
+  cM('m-add-ses');
+  rEmps();
+  alert(added+' sesion'+(added>1?'es':'')+' agregada'+(added>1?'s':'')+' correctamente.');
+});
+
+function xlExport(){
+  if(!emps.length){alert('No hay empleados para exportar.');return}
+  var rows=[];
+  emps.forEach(function(e){
+    Object.entries(e.ses).forEach(function(x){
+      var k=x[0],s=x[1];
+      rows.push({'Nombre':e.nom,'Omega ID':e.id,'Cargo':e.cargo||'','Area':e.area||'','Fecha ingreso':e.fecha,'Jefe':e.jefe||'','Sesion':k,'Tipo':s.tipo,'Dia':s.dia,'Hora':s.hora,'Duracion min':s.dur,'Expositor':s.expositor||'','Modalidad':s.modo||'','Estado':s.st==='ok'?'Completada':s.st==='agendado'?'Agendada':s.st==='re'?'Reprogramada':'Pendiente','Fecha completada':s.fechaOk||'','Avance':pct(e)+'%'});
+    });
+  });
+  var ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Onboarding');
+  ws['!cols']=Object.keys(rows[0]).map(function(){return{wch:15}});
+  XLSX.writeFile(wb,'Onboarding_Omega_'+new Date().toISOString().split('T')[0]+'.xlsx');
+}
+
+rDash();
+</script>
+</body>
+</html>
+
